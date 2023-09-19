@@ -1,0 +1,125 @@
+children: [
+                Container(
+                  width: 200,
+                  height: 160,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage("lib/assets/Logo.png")),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    'E-mail',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
+                TextField(
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(width: 2, color: ColorsStandard.teste),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(width: 2, color: Colormenu.BordaAtiva),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        //labelText: 'E-mail',
+                        hintText: 'Insira E-mail')),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    'Senha',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
+                TextField (
+                  // controller: _passwordController,
+                  // obscureText: _isObscure,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2, color: ColorsStandard.teste),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(width: 2, color: Colormenu.BordaAtiva),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      suffixIcon: GestureDetector(
+                          onTap: () {
+                      setState(() {
+                        _isObscure = !_isObscure; // Alternar o estado diretamente no onTap
+                      });
+                    },
+                    child: Icon(
+                      _isObscure ? Icons.visibility_off : Icons.visibility,
+                    ),
+                      //labelText: 'Insira Senha',
+                ),
+                    hintText: 'Insira Senha'),
+                    class Login implements Exception {
+                    
+                    },
+                ElevatedButton(
+                  onPressed: () {
+                    print('Você está logado!');
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding:  EdgeInsets.symmetric(
+                          horizontal: 0.0), // espaçamento
+                      minimumSize: const Size(
+                          double.infinity, 60), //tamanho mínimo do botão
+                      textStyle:
+                           TextStyle(fontSize: 18), // tamanho da fonte
+                      backgroundColor: botoesApp),
+                  child:  Text('Acessar'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    print("Conta criada com sucesso!");
+                  },
+                  style: ElevatedButton.styleFrom(
+                      //padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      fixedSize: Size(0, 60),
+                      //  minimumSize: const Size(double.infinity, 60),
+                      textStyle:
+                          const TextStyle(fontSize: 18), // tamanho da fonte
+                      backgroundColor: criarconta),
+                  child: const Text('Criar Conta'),
+                ),
+              ],
+            );
+    return Scaffold(
+      backgroundColor: fundoApp,
+      appBar: _appBar(),
+      body: SingleChildScrollView(
+        child: Container(
+          color: fundoApp,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
+            child: column,
+          ),
+       ),
+     ),
+   );
+ }
+
+  PreferredSize _appBar() {
+    return PreferredSize(
+        child: AppBar(
+          elevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
+        preferredSize: const Size.fromHeight(0));
+  }
+}
