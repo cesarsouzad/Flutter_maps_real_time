@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:primeiro_projeto_flutter/utils/colors_standard.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Maps extends StatefulWidget {
   const Maps({Key? key}) : super(key: key);
 
   @override
   _MapsState createState() => _MapsState();
+}
+
+MinhaPosicao() async {
+  Position _PositionReal = await Geolocator.getCurrentPosition();
+  print(_PositionReal);
 }
 
 class _MapsState extends State<Maps> {
@@ -26,6 +33,22 @@ class _MapsState extends State<Maps> {
           title: const Text('MAP REAL TIME'),
           backgroundColor: Colors.green[700],
           titleSpacing: 130,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.location_on), // Ícone do botão
+              onPressed: () async {
+                var status = await Permission.location.request();
+                if (status.isGranted) {
+                  Position position = await Geolocator.getCurrentPosition();
+                  print(position);
+                } else {
+                  print('Permissão de localização negada');
+                }
+
+                MinhaPosicao();
+              },
+            ),
+          ],
         ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,

@@ -11,7 +11,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   bool _isObscure = true;
+  String _errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -108,12 +111,37 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              if (_errorMessage.isNotEmpty)
+                Text(
+                  _errorMessage,
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 16,
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 45.0),
                 child: ElevatedButton(
                   onPressed: () {
+                    final email = _emailController.text
+                        .trim(); // Obtenha o valor do campo de email
+                    final senha = _passwordController.text
+                        .trim(); // Obtenha o valor do campo de senha
+
+                    if (email.isEmpty || senha.isEmpty) {
+                      setState(() {
+                        // print('ERRRRRRRRRRRRRRO');
+                        _errorMessage = 'Preencha todos os campos';
+                      });
+                      // Verifique se os campos estão vazios
+                      // Exibir uma mensagem de erro ou fazer qualquer outra ação necessária
+                    } else {
+                      // Se os campos não estiverem vazios, você pode prosseguir com a lógica de autenticação
+                      // Por exemplo, verificar o email e senha em um servidor e navegar para a próxima tela se a autenticação for bem-sucedida
+                      // Caso contrário, exiba uma mensagem de erro apropriada
+                      Navigator.of(context).pushNamed('/pages/home');
+                    }
                     //print('Acessou');
-                    Navigator.of(context).pushNamed('/pages/home');
                   },
                   style: ElevatedButton.styleFrom(
                       padding:
