@@ -1,10 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:primeiro_projeto_flutter/login/login_api.dart';
 import 'package:primeiro_projeto_flutter/pages/home.dart';
 import 'package:primeiro_projeto_flutter/utils/colors_standard.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,13 +21,15 @@ class _HomePageState extends State<HomePage> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    var usuario = LoginApi.login(email, password);
-    // ignore: unnecessary_null_comparison
-    if (usuario != null) {
+    bool loginSucess = await LoginApi.login(email, password);
+
+    if (loginSucess) {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
     } else {
-      AlertDialog(semanticLabel: "login invalido");
+      setState(() {
+        _errorMessage = "E-mail ou Senha Inválido!";
+      });
     }
   }
 

@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:primeiro_projeto_flutter/login/usuario.dart';
 
 class LoginApi {
-  static Future<Usuario> login(String email, String password) async {
+  static Future<bool> login(String email, String password) async {
     var url = Uri.parse('https://mockapi.hiperlink.pro/api/login');
 
     var header = {"Content-Type": "application/json"};
@@ -20,6 +19,26 @@ class LoginApi {
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
-    return Usuario();
+    Map<String, dynamic>? mapResponse;
+
+    try {
+      mapResponse = jsonDecode(response.body);
+    } catch (e) {
+      print('Erro ao decodificar a resposta JSON: $e');
+      return false; // Se houver erro na decodificação, retorna false.
+    }
+
+    String mensagem = mapResponse?["message"] ?? "";
+    String? token = mapResponse?["data"]?["token"] as String?;
+
+    print("mensagem::: $mensagem");
+    print("token::: $token");
+
+    // Verifica se a mensagem é "User login successfully."
+    if (mensagem == "User login successfully.") {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
