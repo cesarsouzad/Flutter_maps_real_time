@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:primeiro_projeto_flutter/login/login_api.dart';
 import 'package:primeiro_projeto_flutter/pages/home.dart';
+import 'package:primeiro_projeto_flutter/pages/usuario.dart';
 import 'package:primeiro_projeto_flutter/utils/colors_standard.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,9 +22,12 @@ class _HomePageState extends State<HomePage> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    bool loginSucess = await LoginApi.login(email, password);
+    Usuario? loginSucess = await LoginApi.login(email, password);
 
-    if (loginSucess) {
+    if (loginSucess != null) {
+      // ignore: use_build_context_synchronously
+
+      // ignore: use_build_context_synchronously
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
     } else {

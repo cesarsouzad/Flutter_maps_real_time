@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:primeiro_projeto_flutter/login/login.dart';
 import 'package:primeiro_projeto_flutter/utils/colors_standard.dart';
+import 'package:http/http.dart' as http;
 
 class Cadastro extends StatefulWidget {
   const Cadastro({Key? key}) : super(key: key);
@@ -19,6 +23,7 @@ class _CadastroState extends State<Cadastro> {
 
   @override
   Widget build(BuildContext context) {
+    //String _errorMessage = '';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey,
@@ -206,8 +211,7 @@ class _CadastroState extends State<Cadastro> {
                                 onChanged: (newValue) {
                                   setState(() {
                                     isSwitchedOn = newValue;
-                                    print(
-                                        isSwitchedOn ? 'ligado' : 'desligado');
+                                    print(isSwitchedOn);
                                   });
                                 },
                                 activeColor: Colors.blueAccent,
@@ -264,9 +268,86 @@ class _CadastroState extends State<Cadastro> {
     );
   }
 
-  void _register() {
+  void _register() async {
     String nome = _nomeController.text;
     String email = _emailController.text;
     String senha = _passwordController.text;
+
+    // Dados que você quer enviar para a API
+    Map<String, dynamic> dados = {
+      'name': nome,
+      'email': email,
+      'password': senha,
+      'authorize_location': isSwitchedOn, // bool em vez de dynamic
+    };
+
+    String dadosJson = jsonEncode(dados);
+    // Realiza a requisição POST para a API
+
+    try {
+      var resposta = await http.post(
+        Uri.parse('https://mockapi.hiperlink.pro/api/register'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': isSwitchedOn ? 'authorized' : 'unauthorized'
+        },
+        body: dadosJson,
+      );
+
+      if (resposta.statusCode == 200) {
+        print('Usuário cadastrado com sucesso!');
+        _cadastradoComSucesso(context, 'Usuário cadastrado com sucesso!');
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
+      } else {
+        print('Erro ao cadastrar usuário: ${resposta.statusCode} ${dados}');
+        _usuarioCadastradoErro(context, 'Erro ! Usuário já existe!');
+      }
+    } catch (e) {
+      print('Erro ao cadastrar usuário: $e');
+    }
   }
+}
+
+void _usuarioCadastradoErro(BuildContext context, String message) {
+  final snackBar = SnackBar(
+    content: Text(
+      message,
+      style: TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
+      ),
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.redAccent,
+    padding: EdgeInsets.symmetric(vertical: 200),
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+void _cadastradoComSucesso(BuildContext context, String message) {
+  final snackBar = SnackBar(
+    content: Text(
+      message,
+      style: TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
+      ),
+      textAlign: TextAlign.center,
+    ),
+    backgroundColor: Colors.green,
+    padding: EdgeInsets.symmetric(vertical: 200),
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(
+      builder: (context) => HomePage(),
+    ),
+  );
 }
