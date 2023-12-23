@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:primeiro_projeto_flutter/login/login_api.dart';
 import 'package:primeiro_projeto_flutter/pages/home.dart';
 import 'package:primeiro_projeto_flutter/pages/usuario.dart';
