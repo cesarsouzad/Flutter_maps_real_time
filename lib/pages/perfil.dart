@@ -334,6 +334,7 @@ void _exibirMensagemErro(BuildContext context, String message) {
 }
 
 void _atualizadoErro(BuildContext context, String message) {
+  // ignore: unused_local_variable
   final snackBar = SnackBar(
     content: Text(
       message,
